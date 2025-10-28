@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'menu_functions.dart';
 
 void main(List<String> args) {
   double balance = 0.0;
@@ -16,12 +17,15 @@ void main(List<String> args) {
     switch (number) {
       case 1:
         print("You selected Deposit option");
+        balance = deposit(balance);
         break;
       case 2:
         print("You selected Withdraw option");
+        balance = withdraw(balance);
         break;
       case 3:
         print("You selected check Balance option");
+        balanceInquiry(balance);
         break;
       case 4:
         print("You selected Exit option");
