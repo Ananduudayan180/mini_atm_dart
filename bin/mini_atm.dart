@@ -1,14 +1,16 @@
 import 'dart:io';
-import 'atm_model/atm_class.dart';
+import 'atm_class.dart';
+import 'input_validation.dart';
 
 void main(List<String> args) {
   ATM atm = ATM();
+
   void showMenu() {
     int? number;
     print("Welcome to Mini ATM");
     while (true) {
       print(
-        "Please select an option:\n1. Deposit\n2. Withdraw\n3. Check Balance\n4. Transaction History\n5. Exit",
+        "Please select an option:\n1. Deposit\n2. Withdraw\n3. Check Balance\n4. Transaction History\n5. Change Pin\n6. Exit",
       );
 
       String? userSelectedMenu = stdin.readLineSync();
@@ -40,7 +42,11 @@ void main(List<String> args) {
           atm.showTransactionHistory();
           break;
         case 5:
-          print("You selected Exit option");
+          print("change PIN option selected");
+          atm.changePin();
+          break;
+        case 6:
+          print("You selected Exit option\nThank you for using Mini ATM");
           exit(0);
         default:
           print("Invalid option selected");
@@ -48,7 +54,7 @@ void main(List<String> args) {
     }
   }
 
-  if (atm.verifyPin()) {
+  if (verifyPin()) {
     showMenu();
   } else {
     exit(0);
