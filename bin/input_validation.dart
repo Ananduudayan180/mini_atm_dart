@@ -3,27 +3,45 @@ import 'atm_class.dart';
 
 ATM atm = ATM();
 bool verifyPin() {
-  while (true) {
-    print('Enter your ATM pin:');
+  bool isVerified = false;
+  int attempts = 3;
+  while (attempts > 0) {
+    print('\nEnter your ATM pin:');
     String? pinInput = stdin.readLineSync();
-    if (pinInput == null) {
-      print("No input provided");
-      exit(0);
+    if (pinInput == null || pinInput.trim().isEmpty) {
+      attempts--;
+      print(
+        "No input provided. Please enter your PIN. left attempts: $attempts",
+      );
+      continue;
     }
     if (pinInput == atm.pin.toString()) {
-      print("PIN verified successfully.");
-      return true;
+      print("✅ PIN verified successfully.");
+      isVerified = true;
+      break;
+    } else if (pinInput.length != 4) {
+      attempts--;
+      print("⚠️ PIN must be a 4-digit number. left attempts: $attempts");
+      continue;
     } else {
-      print("Incorrect PIN. Access denied.");
-      return false;
+      attempts--;
+      print("❌ Incorrect PIN. left attempts: $attempts");
+      continue;
     }
+  }
+  if (!isVerified) {
+    sleep(Duration(seconds: 2));
+    print("⚠️ Maximum attempts reached. Exiting.");
+    return false;
+  } else {
+    return true;
   }
 }
 
 double inputValidation() {
   while (true) {
     String? stringAmount = stdin.readLineSync();
-    if (stringAmount == null) {
+    if (stringAmount == null || stringAmount.isEmpty) {
       print("No input provided");
       continue;
     } else {
@@ -38,6 +56,7 @@ double inputValidation() {
         return amount;
       } catch (e) {
         print("Invalid amount entered. Please enter a valid number.");
+        sleep(Duration(seconds: 1));
         continue;
       }
     }
@@ -45,31 +64,48 @@ double inputValidation() {
 }
 
 int changePinValidation() {
-  while (true) {
+  int newPin = atm.pin;
+  bool changed = false;
+  int attempts = 3;
+  while (attempts > 0) {
     print("Enter current PIN:");
     String? currentPin = stdin.readLineSync();
     if (currentPin == null ||
         currentPin.isEmpty ||
         currentPin != atm.pin.toString()) {
-      print("Incorrect current PIN. PIN change failed.");
+      print(
+        "Incorrect current PIN. Please try again.left attempts: ${--attempts}",
+      );
       continue;
     }
     print("Enter new 4-digit PIN:");
     String? stringNewPin = stdin.readLineSync();
-    if (stringNewPin == null) {
-      print("No input provided");
+    if (stringNewPin == null || stringNewPin.isEmpty) {
+      print("No input provided. left attempts: ${--attempts}");
       continue;
     }
     try {
-      int newPin = int.parse(stringNewPin);
-      if (newPin < 1000 || newPin > 9999) {
-        print("PIN must be a 4-digit number. PIN change failed.");
+      newPin = int.parse(stringNewPin);
+      if (newPin.toString().length != 4) {
+        print(
+          "PIN must be a 4-digit number. PIN change failed.left attempts: ${--attempts}",
+        );
         continue;
       }
-      return newPin;
+      changed = true;
     } catch (e) {
-      print("Invalid PIN format. PIN change failed.");
+      print(
+        "Invalid PIN format. PIN change failed. left attempts: ${--attempts}",
+      );
       continue;
     }
+  }
+
+  if (changed) {
+    return newPin;
+  } else {
+    sleep(Duration(seconds: 2));
+    print("⚠️ Maximum attempts reached. PIN change failed.");
+    return atm.pin;
   }
 }
