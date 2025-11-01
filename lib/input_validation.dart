@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'atm_class.dart';
+import 'package:mini_atm/atm_class.dart';
 
 ATM atm = ATM();
 bool verifyPin() {
@@ -93,6 +93,7 @@ int changePinValidation() {
         continue;
       }
       changed = true;
+      break;
     } catch (e) {
       print(
         "Invalid PIN format. PIN change failed. left attempts: ${--attempts}",

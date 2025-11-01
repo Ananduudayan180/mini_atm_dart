@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'atm_class.dart';
-import 'input_validation.dart';
+import 'package:mini_atm/atm_class.dart';
+import 'package:mini_atm/input_validation.dart';
 
 void main(List<String> args) {
   ATM atm = ATM();
