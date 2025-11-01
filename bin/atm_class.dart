@@ -5,6 +5,13 @@ class ATM {
   int _pin = 1234;
   final List<String> _transactionHistory = [];
 
+  static final ATM _instance = ATM._internall();
+
+  ATM._internall();
+  factory ATM() {
+    return _instance;
+  }
+
   int get pin => _pin;
 
   set pin(int newPin) {
